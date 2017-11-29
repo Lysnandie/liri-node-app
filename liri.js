@@ -63,3 +63,33 @@ spotify.search({
 
 });
 };
+
+
+//===================OMDB Movie Request========================
+
+var movieName = process.argv[2];
+
+// Then run a request to the OMDB API with the movie specified
+var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=40e9cece";
+
+
+
+request(queryUrl, function(error, response, body) {
+
+  // If the request is successful
+  if (!error && response.statusCode === 200) {
+
+    //parses response on console
+    console.log(JSON.parse(body));
+    console.log("Title: " + JSON.parse(body).title);
+    console.log("Release Year: " + JSON.parse(body).Year);
+    console.log("Rating: " + JSON.parse(body).imdbRating);
+    console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings);
+    console.log("Country of Production: " + JSON.parse(body).Country);
+    console.log("Language: " + JSON.parse(body).Language);
+    console.log("Plot: " + JSON.parse(body).Plot);
+    console.log("Actors: " + JSON.parse(body).Actors);
+
+
+  }
+});
