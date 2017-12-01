@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Lysnandie/liri-node-app#readme",
   "dependencies": {
     "node": "^9.2.0",
+    "node-spotify-api": "^1.0.7",
     "request": "^2.83.0",
     "spotify-api": "0.0.0",
     "twitter": "^1.7.1"
