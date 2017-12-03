@@ -12,7 +12,7 @@ var argTwo = process.argv[3];
 
 
 //---------------------------Twitter------------------------------------------------------//
-var getTweets = function() {
+var getTweets = function () {
 
   //client keys
   var client = new Twitter(keys);
@@ -22,7 +22,7 @@ var getTweets = function() {
     count: 20
   };
   //nmp function for getTweets
-  client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  client.get('statuses/user_timeline', params, function (error, tweets, response) {
     if (!error) {
       //empty array to store Tweets
       var data = [];
@@ -43,54 +43,51 @@ var getTweets = function() {
   });
 
 };
-//run function
-getTweets();
 // //
 // // //========================================Spotify==========================================
-var getSpotify = function(){
-//spotify client keys
-var spotify = new Spotify({
-  id: '9d8c4ec731dd49df9efffc1876380f57',
-  secret: 'ad54f251d5674a8583a757dcac346efa'
-});
+var getSpotify = function (MavisBeacon) {
+  //spotify client keys
+  var spotify = new Spotify({
+    id: '9d8c4ec731dd49df9efffc1876380f57',
+    secret: 'ad54f251d5674a8583a757dcac346efa'
+  });
 
 
-//if user doesn't input a song, search "what's my age again" in the search
-if (argTwo === undefined) {
-   argTwo = 'What\'s my age again';
- };
+  //if user doesn't input a song, search "what's my age again" in the search
+  if (MavisBeacon === undefined) {
+    MavisBeacon = 'What\'s my age again';
+  };
 
-//spotify npm search
-spotify.search({ type: 'track', query: argTwo }, function(err, data) {
-  if (err) {
-    return console.log('Error occurred: ' + err);
-  }
+  //spotify npm search
+  spotify.search({ type: 'track', query: MavisBeacon }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
 
-console.log("Artist Name: " + data.tracks.items[0].artists[0].name);
-console.log("Song Name: " + data.tracks.items[0].name);
-console.log("Spotify Preview Link: " + data.tracks.items[0].external_urls.spotify);
-console.log("Album: " + data.tracks.items[0].album.name);
+    console.log("Artist Name: " + data.tracks.items[0].artists[0].name);
+    console.log("Song Name: " + data.tracks.items[0].name);
+    console.log("Spotify Preview Link: " + data.tracks.items[0].external_urls.spotify);
+    console.log("Album: " + data.tracks.items[0].album.name);
 
-//append to log txt file
- fs.appendFile('log.txt', "Artist: " + data.tracks.items[0].artists[0].name + "\n" + "Song Name: " + data.tracks.items[0].name + "\n" + "Spotify Preview Link: " + data.tracks.items[0].external_urls.spotify + "\n" + "Album: " +
- data.tracks.items[0].album.name + "\n" + "\n");
+    //append to log txt file
+    fs.appendFile('log.txt', "Artist: " + data.tracks.items[0].artists[0].name + "\n" + "Song Name: " + data.tracks.items[0].name + "\n" + "Spotify Preview Link: " + data.tracks.items[0].external_urls.spotify + "\n" + "Album: " +
+      data.tracks.items[0].album.name + "\n" + "\n");
 
-});
+  });
 }
 
-getSpotify();
 
 //
 // // //===================OMDB Movie Request======================================================
 // //
-var getMovie = function() {
+var getMovie = function (query) {
 
   // Then run a request to the OMDB API with the movie specified
-  var queryUrl = "http://www.omdbapi.com/?t=" + argTwo + "&y=&plot=short&apikey=40e9cece";
+  var queryUrl = "http://www.omdbapi.com/?t=" + query + "&y=&plot=short&apikey=40e9cece";
 
 
 
-  request(queryUrl, function(error, response, body) {
+  request(queryUrl, function (error, response, body) {
 
     // If the request is successful
     if (!error && response.statusCode === 200) {
@@ -113,10 +110,9 @@ var getMovie = function() {
   });
 }
 
-getMovie();
 
-var doWhatItSays = function() {
-  fs.readFile("random.txt", "utf8", function(error, data) {
+var doWhatItSays = function () {
+  fs.readFile("random.txt", "utf8", function (error, data) {
     console.log(data);
     var dataArr = data.split(',')
 
@@ -127,26 +123,26 @@ var doWhatItSays = function() {
     }
   });
 }
-doWhatItSays();
+
 
 //switch statement to run different apps
-var choice = function(){
-switch (argOne) {
+var choice = function (param1, param2) {
+  switch (param1) {
     case 'my-tweets':
-        getTweets();
-        break;
+      getTweets();
+      break;
 
     case 'spotify-this-song':
-        getSpotify();
-        break;
+      getSpotify(param2);
+      break;
 
     case 'movie-this':
-        getMovie();
-        break;
+      getMovie(param2);
+      break;
 
     case 'do-what-it-says':
-        doWhatItSays();
-        break;
- }
- }
- choice();
+      doWhatItSays();
+      break;
+  }
+}
+choice(argOne, argTwo);
